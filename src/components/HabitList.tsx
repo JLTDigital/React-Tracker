@@ -1,17 +1,6 @@
 import HabitItem from './HabitItem'
 
-const HabitList = () => {
-  const habits = [
-    {
-      id: '1',
-      name: 'Drink Water'
-    },
-    {
-      id: '2',
-      name: 'Exercise'
-    }
-  ]
-
+const HabitList = ({ habits }: HabitListProps) => {
   if (habits.length === 0) {
     return (
       <p className='text-zinc-500 text-center py-12'>
@@ -30,3 +19,9 @@ const HabitList = () => {
 }
 
 export default HabitList
+
+export type Habit = { id: string; name: string }
+
+interface HabitListProps {
+  habits: Habit[]
+}

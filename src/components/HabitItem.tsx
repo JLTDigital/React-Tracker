@@ -41,9 +41,8 @@ const HabitItem = ({ habit }: HabitItemProps) => {
 
 export default HabitItem
 
+type Habit = { id: string; name: string }
+
 interface HabitItemProps {
-  habit: {
-    id: String
-    name: String
-  }
+  habit: Habit
 }
