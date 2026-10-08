@@ -7,7 +7,7 @@ import {
   isFuture
 } from 'date-fns'
 
-const HabitItem = ({ habit }: HabitItemProps) => {
+const HabitItem = ({ habit, deleteHabit }: HabitItemProps) => {
   const visibleDates = eachDayOfInterval({
     start: startOfWeek(new Date(), { weekStartsOn: 1 }),
     end: endOfWeek(new Date(), { weekStartsOn: 1 })
@@ -20,7 +20,10 @@ const HabitItem = ({ habit }: HabitItemProps) => {
           <span className='font-medium'>{habit.name}</span>
           <span className='text-amber-400 text-sm'>🔥 3</span>
         </div>
-        <Button className='text-sm' variant='ghost-destructive'>
+        <Button
+          className='text-sm'
+          variant='ghost-destructive'
+          onClick={() => deleteHabit(habit.id)}>
           Delete
         </Button>
       </div>
@@ -45,4 +48,5 @@ type Habit = { id: string; name: string }
 
 interface HabitItemProps {
   habit: Habit
+  deleteHabit: (id: string) => void
 }

@@ -32,4 +32,5 @@ export default HabitForm
 
 interface HabitFormProps {
   addHabit: (name: string) => void
+  deleteHabit: (id: string) => void
 }
