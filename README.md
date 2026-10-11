@@ -1,78 +1,110 @@
-# React + TypeScript + Vite
+# React Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple weekly habit tracker built with React, TypeScript, and Vite. It lets users add habits, mark daily completions for each day of the current week, track streaks, and persist progress in browser local storage.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This project is a lightweight productivity app for building daily routines. Users can:
 
-## React Compiler
+- create custom habits
+- toggle completion for each day in the displayed week
+- view a current streak for each habit
+- move between weeks with previous/next navigation
+- keep their data saved locally in the browser
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Features
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+- Weekly date navigation using `date-fns`
+- Habit creation form with validation
+- Daily completion toggling by day of the week
+- Streak indicator for consecutive completed days
+- Delete actions for individual habits
+- Local persistence via `localStorage`
+- Responsive dark-themed UI with a clean dashboard layout
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 19
+- TypeScript
+- Vite
+- date-fns
+- Tailwind CSS
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Project Structure
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+src/
+  App.tsx
+  main.tsx
+  index.css
+  components/
+    Button.tsx
+    HabitForm.tsx
+    HabitItem.tsx
+    HabitList.tsx
+    Header.tsx
+  context/
+    HabitProvider.tsx
+  hooks/
+    useLocalStorage.ts
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+### Main parts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- `App.tsx`: sets up the visible week and renders the app shell
+- `HabitProvider.tsx`: manages habit state and persistence through context
+- `HabitForm.tsx`: adds new habits
+- `HabitList.tsx`: lists all habits
+- `HabitItem.tsx`: renders a habit row with daily toggles and streak badge
+- `Header.tsx`: shows progress for the current day and navigates weeks
+- `useLocalStorage.ts`: persists habit data in `localStorage`
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## How It Works
 
+The app keeps a list of habits in a React context. Each habit contains:
+
+- a unique id
+- a name
+- an array of completion dates
+
+When a user clicks on a day button for a habit, the date is added to or removed from that habit's completion list. The app computes a streak by checking consecutive dates from today backward. Each week is derived using `date-fns` and the visible date range is displayed in the header.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm
+
+### Install dependencies
+
+```bash
+npm install
 ```
+
+### Run the app locally
+
+```bash
+npm run dev
+```
+
+The application will be available in the browser through the Vite dev server.
+
+### Production build
+
+```bash
+npm run build
+```
+
+### Lint the project
+
+```bash
+npm run lint
+```
+
+## Notes
+
+- Habit data is stored in the browser, so it persists across refreshes on the same browser/device.
+- The app is intentionally lightweight and does not use a backend or database.
+- Calendar logic is week-based and centers around the current date with previous/next week navigation.
+
