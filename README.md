@@ -1,5 +1,7 @@
 # React Tracker
 
+Live Link: https://ornate-marigold-f51d9c.netlify.app/
+
 A simple weekly habit tracker built with React, TypeScript, and Vite. It lets users add habits, mark daily completions for each day of the current week, track streaks, and persist progress in browser local storage.
 
 ## Overview
