@@ -1,3 +1,4 @@
+import { useHabits } from '../context/HabitProvider'
 import Button from './Button'
 import {
   startOfWeek,
@@ -9,7 +10,17 @@ import {
   subDays
 } from 'date-fns'
 
-const HabitItem = ({ habit, deleteHabit, toggleHabit }: HabitItemProps) => {
+type HabitItemProps = {
+  habit: {
+    id: string
+    name: string
+    completions: Date[]
+  }
+}
+
+const HabitItem = ({ habit }: HabitItemProps) => {
+  const { deleteHabit, toggleHabit } = useHabits()
+
   const visibleDates = eachDayOfInterval({
     start: startOfWeek(new Date(), { weekStartsOn: 1 }),
     end: endOfWeek(new Date(), { weekStartsOn: 1 })
@@ -65,11 +76,3 @@ const HabitItem = ({ habit, deleteHabit, toggleHabit }: HabitItemProps) => {
 }
 
 export default HabitItem
-
-type Habit = { id: string; name: string; completions: Date[] }
-
-interface HabitItemProps {
-  habit: Habit
-  deleteHabit: (id: string) => void
-  toggleHabit: (id: string, date: Date) => void
-}
