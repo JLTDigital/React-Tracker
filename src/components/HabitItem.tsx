@@ -1,30 +1,14 @@
-import { useHabits } from '../context/HabitProvider'
+import { useHabits, type Habit } from '../context/HabitProvider'
 import Button from './Button'
-import {
-  startOfWeek,
-  endOfWeek,
-  eachDayOfInterval,
-  format,
-  isFuture,
-  isSameDay,
-  subDays
-} from 'date-fns'
+import { format, isFuture, isSameDay, subDays } from 'date-fns'
 
 type HabitItemProps = {
-  habit: {
-    id: string
-    name: string
-    completions: Date[]
-  }
+  habit: Habit
+  visibleDates: Date[]
 }
 
-const HabitItem = ({ habit }: HabitItemProps) => {
+const HabitItem = ({ habit, visibleDates }: HabitItemProps) => {
   const { deleteHabit, toggleHabit } = useHabits()
-
-  const visibleDates = eachDayOfInterval({
-    start: startOfWeek(new Date(), { weekStartsOn: 1 }),
-    end: endOfWeek(new Date(), { weekStartsOn: 1 })
-  })
 
   const getStreak = (completions: Date[]) => {
     let streak = 0
