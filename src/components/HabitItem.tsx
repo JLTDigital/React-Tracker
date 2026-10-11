@@ -4,21 +4,37 @@ import {
   endOfWeek,
   eachDayOfInterval,
   format,
-  isFuture
+  isFuture,
+  isSameDay,
+  subDays
 } from 'date-fns'
 
-const HabitItem = ({ habit, deleteHabit }: HabitItemProps) => {
+const HabitItem = ({ habit, deleteHabit, toggleHabit }: HabitItemProps) => {
   const visibleDates = eachDayOfInterval({
     start: startOfWeek(new Date(), { weekStartsOn: 1 }),
     end: endOfWeek(new Date(), { weekStartsOn: 1 })
   })
+
+  const getStreak = (completions: Date[]) => {
+    let streak = 0
+    let date = new Date()
+    while (completions.some((c) => isSameDay(c, date))) {
+      streak++
+      date = subDays(date, 1)
+    }
+    return streak
+  }
+
+  const streak = getStreak(habit.completions)
 
   return (
     <div className='rounded-xl bg-zinc-800 p-4 flex flex-col gap-3'>
       <div className='flex items-center justify-between'>
         <div className='flex gap-3 items-center'>
           <span className='font-medium'>{habit.name}</span>
-          <span className='text-amber-400 text-sm'>🔥 3</span>
+          {streak !== 0 && (
+            <span className='text-amber-400 text-sm'>🔥 {streak}</span>
+          )}
         </div>
         <Button
           className='text-sm'
@@ -32,7 +48,13 @@ const HabitItem = ({ habit, deleteHabit }: HabitItemProps) => {
           <Button
             className='flex flex-1 flex-col items-center gap-0.5 rounded-lg text-xs'
             disabled={isFuture(date)}
-            key={date.toISOString()}>
+            key={date.toISOString()}
+            onClick={() => toggleHabit(habit.id, date)}
+            variant={
+              habit.completions.some((d) => isSameDay(date, d))
+                ? 'primary'
+                : 'secondary'
+            }>
             <span className='font-medium'>{format(date, 'EEE')}</span>
             <span>{format(date, 'd')}</span>
           </Button>
@@ -44,9 +66,10 @@ const HabitItem = ({ habit, deleteHabit }: HabitItemProps) => {
 
 export default HabitItem
 
-type Habit = { id: string; name: string }
+type Habit = { id: string; name: string; completions: Date[] }
 
 interface HabitItemProps {
   habit: Habit
   deleteHabit: (id: string) => void
+  toggleHabit: (id: string, date: Date) => void
 }

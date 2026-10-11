@@ -1,6 +1,6 @@
 import HabitItem from './HabitItem'
 
-const HabitList = ({ habits, deleteHabit }: HabitListProps) => {
+const HabitList = ({ habits, deleteHabit, toggleHabit }: HabitListProps) => {
   if (habits.length === 0) {
     return (
       <p className='text-zinc-500 text-center py-12'>
@@ -12,7 +12,12 @@ const HabitList = ({ habits, deleteHabit }: HabitListProps) => {
   return (
     <div className='flex flex-col gap-3'>
       {habits.map((habit) => (
-        <HabitItem key={habit.id} habit={habit} deleteHabit={deleteHabit} />
+        <HabitItem
+          key={habit.id}
+          habit={habit}
+          deleteHabit={deleteHabit}
+          toggleHabit={toggleHabit}
+        />
       ))}
     </div>
   )
@@ -20,9 +25,10 @@ const HabitList = ({ habits, deleteHabit }: HabitListProps) => {
 
 export default HabitList
 
-export type Habit = { id: string; name: string }
+export type Habit = { id: string; name: string; completions: Date[] }
 
 interface HabitListProps {
   habits: Habit[]
   deleteHabit: (id: string) => void
+  toggleHabit: (id: string, date: Date) => void
 }
