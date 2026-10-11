@@ -1,4 +1,4 @@
-import { parseISO, parseJSON } from 'date-fns'
+import { parseISO } from 'date-fns'
 import { useEffect, useState } from 'react'
 
 export const useLocalStorage = <T>(key: string, inititalValue: T) => {
